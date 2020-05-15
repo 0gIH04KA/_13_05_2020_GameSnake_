@@ -41,7 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\FoodController.cs" />
+    <Compile Include="Controller\SnakeControllers.cs" />
+    <Compile Include="Controller\WallController.cs" />
+    <Compile Include="Interface\ICreated.cs" />
+    <Compile Include="Interface\IDraw.cs" />
+    <Compile Include="Interface\IEating.cs" />
+    <Compile Include="Interface\IHits.cs" />
+    <Compile Include="Interface\IMoveble.cs" />
+    <Compile Include="NewFolder1\HorizontalLine.cs" />
+    <Compile Include="Model\Figure.cs" />
+    <Compile Include="NewFolder1\VerticalLine.cs" />
+    <Compile Include="Enum\Direction.cs" />
+    <Compile Include="Model\Food.cs" />
+    <Compile Include="Model\Point.cs" />
+    <Compile Include="Model\Snake.cs" />
+    <Compile Include="Model\Walls.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
