@@ -9,18 +9,45 @@ using RulesSnake.Interface;
 
 namespace RulesSnake.Model
 {
+    /// <summary>
+    /// 
+    /// Точка - минимальный объект игры
+    /// 
+    /// </summary>
     public class Point : IHits, IDraw
     {
         #region ---===   Private Data   ===---
 
+        /// <summary>
+        /// 
+        /// Координата по оси Х
+        /// 
+        /// </summary>
         private int _x;
+
+        /// <summary>
+        /// 
+        /// Координата по оси Y
+        /// 
+        /// </summary>
         private int _y;
+
+        /// <summary>
+        /// 
+        /// Символ для отображения
+        /// 
+        /// </summary>
         private char _sym;
 
         #endregion
 
         #region ---===   Property   ===---
 
+        /// <summary>
+        /// 
+        /// Получение координаты по оси X и валидация данных
+        /// 
+        /// </summary>
         public int X
         {
             get
@@ -29,10 +56,20 @@ namespace RulesSnake.Model
             }
             set
             {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Координата не может быть отрицательной");
+                }
+
                 _x = value;
             }
         }
 
+        /// <summary>
+        /// 
+        /// Получение координаты по оси Y и валидация данных
+        /// 
+        /// </summary>
         public int Y
         {
             get
@@ -41,10 +78,20 @@ namespace RulesSnake.Model
             }
             set
             {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Координата не может быть отрицательной");
+                }
+
                 _y = value;
             }
         }
 
+        /// <summary>
+        /// 
+        /// Получение символа 
+        /// 
+        /// </summary>
         public char Sym
         {
             get
@@ -61,6 +108,14 @@ namespace RulesSnake.Model
 
         #region ---===   Ctor   ===---
 
+        /// <summary>
+        /// 
+        /// Созжание точки
+        /// 
+        /// </summary>
+        /// <param name="x"> Координата по Х </param>
+        /// <param name="y"> Координата по Y </param>
+        /// <param name="sym"> Символ отображения </param>
         public Point(int x, int y, char sym)
         {
             _x = x;
@@ -68,6 +123,12 @@ namespace RulesSnake.Model
             _sym = sym;
         }
 
+        /// <summary>
+        /// 
+        /// Создание копии точки 
+        /// 
+        /// </summary>
+        /// <param name="point"> Точка как объект игры </param>
         public Point(Point point)
         {
             _x = point._x;
@@ -77,45 +138,18 @@ namespace RulesSnake.Model
 
         #endregion
 
-        #region ---===   Public Function   ===---
+        #region ---===   IHits   ===---
 
-        internal void Move (int offset, Direction direction)
+        /// <summary>
+        /// 
+        /// Проверка столкновения объектов
+        /// 
+        /// </summary>
+        /// <param name="gameObject"> Игровой обьект </param>
+        /// <returns> Результат столкновения </returns>
+        bool IHits.IsHit(object gameObject)
         {
-            switch (direction)
-            {                   
-                case Direction.LEFT:
-                    {
-                        _x -= offset;
-
-                        break;
-                    }
-                    
-                case Direction.RIGHT:
-                    {
-                        _x += offset;
-
-                        break;
-                    }
-                    
-                case Direction.UP:
-                    {
-                        _y -= offset;
-
-                        break;
-                    }
-
-                case Direction.DOWN:
-                    {
-                        _y += offset;
-
-                        break;
-                    }
-            }
-        }
-
-        bool IHits.IsHit(object obj)
-        {
-            if (!(obj is Point point))
+            if (!(gameObject is Point point))
             {
                 throw new Exception("Ой ой, что-то пошло нетак ");
             }
@@ -124,19 +158,26 @@ namespace RulesSnake.Model
                 && (point._y == _y));
         }
 
-        //todo: Delete This!
-        //public bool IsHit(Point point)
-        //{
-        //    return ((point._x == _x)
-        //         && (point._y == _y));
-        //}
+        #endregion
 
+        #region ---===   IDraw   ===---
+
+        /// <summary>
+        /// 
+        /// Отрисовка точек в указаных координатах
+        /// 
+        /// </summary>
         public void Draw()
         {
             Console.SetCursorPosition(_x, _y);
             Console.Write(_sym);
         }
 
+        /// <summary>
+        /// 
+        /// Затирание хвоста после змейки
+        /// 
+        /// </summary>
         public void Clear()
         {
             _sym = ' ';
@@ -145,11 +186,47 @@ namespace RulesSnake.Model
 
         #endregion
 
-        #region ---===   Override Method   ===---
+        #region ---===   Internal Method   ===---
 
-        public override string ToString()
+        /// <summary>
+        /// 
+        /// Реализация движения в укзанном направвлении
+        /// 
+        /// </summary>
+        /// <param name="offset"> Величина сдвига </param>
+        /// <param name="direction"> Направление </param>
+        internal void Move (int offset, Direction direction)
         {
-            return _x + ", " + _y + ", " + _sym;
+            switch (direction)
+            {                   
+                case Direction.Left:
+                    {
+                        _x -= offset;
+
+                        break;
+                    }
+                    
+                case Direction.Right:
+                    {
+                        _x += offset;
+
+                        break;
+                    }
+                    
+                case Direction.Up:
+                    {
+                        _y -= offset;
+
+                        break;
+                    }
+
+                case Direction.Down:
+                    {
+                        _y += offset;
+
+                        break;
+                    }
+            }
         }
 
         #endregion

@@ -6,63 +6,52 @@ using System.Threading.Tasks;
 
 namespace RulesSnake.Model
 {
-    public class Food 
+    /// <summary>
+    /// 
+    /// Еда как игровой объект
+    /// 
+    /// </summary>
+    public class Food : Point
     {
         #region ---===   Private Data   ===---
 
+        /// <summary>
+        /// 
+        /// Еда на игровом поле
+        /// 
+        /// </summary>
         private readonly Point _food;
-
-        #endregion
-
-        #region ---===   Property   ===---
-
-        public int CoordinateX
-        {
-            get
-            {
-                return _food.X;
-            }
-            set
-            {
-                _food.X = value;
-            }
-        }
-
-        public int CoordinateY
-        {
-            get
-            {
-                return _food.Y;
-            }
-            set
-            {
-                _food.Y = value;
-            }
-        }
-
-        public char Symbol
-        {
-            get
-            {
-                return _food.Sym;
-            }
-            set
-            {
-                _food.Sym = value;
-            }
-        }
 
         #endregion
 
         #region ---===   Ctor   ===---
 
+        /// <summary>
+        /// 
+        /// Создание еды
+        /// 
+        /// </summary>
+        /// <param name="coordinateWidth"> Координата по ширине </param>
+        /// <param name="coordinateHeight"> Координата по высоте </param>
+        /// <param name="sym"> Символ для еды </param>
         public Food(int coordinateWidth, int coordinateHeight, char sym)
+            :base(coordinateWidth, coordinateHeight, sym)
         {
             _food = new Point(coordinateWidth, coordinateHeight, sym);
         }
 
-        #endregion
+        /// <summary>
+        /// 
+        /// Создание копии еды
+        /// 
+        /// </summary>
+        /// <param name="food"> Текущая еда </param>
+        public Food (Food food)
+            :this(food.X, food.Y, food.Sym)
+        {
+        }
 
+        #endregion
 
     }
 }

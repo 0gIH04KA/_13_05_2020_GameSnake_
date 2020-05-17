@@ -8,6 +8,11 @@ namespace RulesSnake.Interface
 {
     public interface  IDraw
     {
+        /// <summary>
+        /// 
+        /// Отрисовка игровых объектов
+        /// 
+        /// </summary>
         void Draw();
     }
 }

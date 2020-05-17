@@ -9,6 +9,11 @@ using RulesSnake.Model;
 
 namespace RulesSnake.Controller
 {
+    /// <summary>
+    /// 
+    /// Контроллер который отвечает за логику стен
+    /// 
+    /// </summary>
     public class WallController : IDraw, IHits
     {
         #region ---===   Constant    ===---
@@ -30,7 +35,27 @@ namespace RulesSnake.Controller
         /// Cтены в игровой зоне
         /// 
         /// </summary>
-        private readonly Walls walls;
+        private readonly Walls _walls;
+
+        #endregion
+
+        #region ---===   Property   ===---
+
+        internal int Width
+        {
+            get
+            {
+                return _walls.Width;
+            }
+        }
+
+        internal int Height
+        {
+            get
+            {
+                return _walls.Height;
+            }
+        }
 
         #endregion
 
@@ -46,7 +71,7 @@ namespace RulesSnake.Controller
         /// <param name="mapSymbol"> Символ игрового поря </param>
         public WallController(int mapWidth, int mapHeight, char mapSymbol = STANDART_SYMBOL)
         {
-            walls = new Walls(mapWidth, mapHeight, mapSymbol);
+            _walls = new Walls(mapWidth, mapHeight, mapSymbol);
         }
 
         #endregion
@@ -59,7 +84,7 @@ namespace RulesSnake.Controller
         /// 
         /// </summary>
         /// 
-        /// <param name="obj"> Обьект игры </param>
+        /// <param name="gameObject"> Обьект игры </param>
         /// 
         /// <returns> 
         /// 
@@ -67,16 +92,16 @@ namespace RulesSnake.Controller
         /// столкновения с обьектом игрового поря
         /// 
         /// </returns>
-        bool IHits.IsHit(object obj)
+        bool IHits.IsHit(object gameObject)
         {
-            if (!(obj is Figure figure))
+            if (!(gameObject is Figure figure))
             {
                 throw new Exception("Ой ой, что-то пошло нетак ");
             }
 
             bool isHit = false;
 
-            foreach (var wall in walls.WallsList)
+            foreach (IHits wall in _walls.WallsList)
             {
                 if (wall.IsHit(figure))
                 {
@@ -86,22 +111,6 @@ namespace RulesSnake.Controller
 
             return isHit;
         }
-
-        //todo: Delete This!
-        //public bool IsHit(Figure figure) 
-        //{
-        //    bool isHit = false;
-
-        //    foreach (var wall in walls.WallsList)
-        //    {
-        //        if (wall.IsHit(figure))
-        //        {
-        //            isHit = true;
-        //        }
-        //    }
-
-        //    return isHit;
-        //}
 
         #endregion
 
@@ -114,20 +123,11 @@ namespace RulesSnake.Controller
         /// </summary>
         void IDraw.Draw()
         {
-            foreach (var wall in walls.WallsList)
+            foreach (var wall in _walls.WallsList)
             {
                 wall.Draw();
             }
         }
-
-        //todo: Delete This!
-        //public void Draw()   
-        //{
-        //    foreach (var wall in walls.WallsList)
-        //    {
-        //        wall.Draw();
-        //    }
-        //}
 
         #endregion
 

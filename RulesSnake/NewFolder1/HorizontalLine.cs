@@ -5,13 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 namespace RulesSnake.Controller
 {
     public class HorizontalLine : Figure
     {
-
         #region ---===   Ctor   ===---
 
         public HorizontalLine(int xLeft, int xRight, int y, char sym)
@@ -40,7 +37,6 @@ namespace RulesSnake.Controller
         }
 
         #endregion
-
 
     }
 }

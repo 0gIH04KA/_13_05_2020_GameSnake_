@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RulesSnake.Controller.FoodController">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAEABQAAAAAAAAAAAQAAAAAQAIgAAAAA=</HashCode>
+      <FileName>Controller\FoodController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="random" />
+      <Property Name="Food" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RulesSnake.Controller.SnakeControllers">
+    <Position X="2.5" Y="2.5" Width="1.5" />
+    <AssociationLine Name="_direction" Type="RulesSnake.Enum.Direction" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.5" Y="4.076" />
+        <Point X="1.188" Y="4.076" />
+        <Point X="1.188" Y="2.181" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Snake" Type="RulesSnake.Model.Snake" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.797" Y="2.5" />
+        <Point X="3.797" Y="2.164" />
+        <Point X="5" Y="2.164" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAQAAAAAAApEAAAAAAAAAAIQAAgAAAKIAAAARA=</HashCode>
+      <FileName>Controller\SnakeControllers.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_direction" />
+      <Property Name="Snake" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RulesSnake.Controller.WallController">
+    <Position X="15.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAABAAAAAAAAEAAAEAAAAAAQAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Controller\WallController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_walls" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RulesSnake.Model.Figure">
+    <Position X="8.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAggAAgAAAAAAAAAAAAAAgAAAAAAAAIBA=</HashCode>
+      <FileName>Model\Figure.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_points" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RulesSnake.Model.Food">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Food.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RulesSnake.Model.Point">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAMwAAgAAAAAAAAAAAAAAAAAAAAAAAABAYAA=</HashCode>
+      <FileName>Model\Point.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RulesSnake.Model.Snake">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <InheritanceLine Type="RulesSnake.Model.Figure" FixedFromPoint="true">
+      <Path>
+        <Point X="8.5" Y="6.851" />
+        <Point X="5.75" Y="6.851" />
+        <Point X="5.75" Y="2.636" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAJAAAAAAA=</HashCode>
+      <FileName>Model\Snake.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Direction" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="RulesSnake.Model.Walls">
+    <Position X="12.75" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="_walls" Type="RulesSnake.Model.Figure" FixedFromPoint="true">
+      <Path>
+        <Point X="12.75" Y="6.144" />
+        <Point X="10" Y="6.144" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ABAgAAAABACAAAAAACAAAEAAQBAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Model\Walls.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_walls" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RulesSnake.Controller.HorizontalLine">
+    <Position X="10.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NewFolder1\HorizontalLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RulesSnake.Controller.VerticalLine">
+    <Position X="6.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NewFolder1\VerticalLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Random" Collapsed="true">
+    <Position X="16" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Enum Name="RulesSnake.Enum.Direction">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAI=</HashCode>
+      <FileName>Enum\Direction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace RulesSnake.Model
 {
-    internal class Walls
+    /// <summary>
+    /// 
+    /// Стена как игровой объект
+    /// 
+    /// </summary>
+    internal class Walls : ICloneable
     {
         #region ---===   Private Data   ===---
 
@@ -18,20 +23,78 @@ namespace RulesSnake.Model
         /// </summary>
         private readonly List<Figure> _walls;
 
+        /// <summary>
+        /// 
+        /// Ширина игрового поля
+        /// 
+        /// </summary>
+        private int _width;
+
+        /// <summary>
+        /// 
+        /// Высота игрового поля
+        /// 
+        /// </summary>
+        private int _height;
+
         #endregion
 
         #region ---===   Property   ===---
 
         /// <summary>
         /// 
-        /// Получение доступа к игровому поля
+        /// Получение ширины игрового поля и валидация
+        /// 
+        /// </summary>
+        public int Width
+        {
+            get
+            {
+                return _width;
+            }
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("Ширина игрового поля не может быть отрицательной!");
+                }
+
+                _width = value;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// Получение высоты игрового поля и валидация
+        /// 
+        /// </summary>
+        public int Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("Высота игрового поля не может быть отрицательной!");
+                }
+
+                _height = value;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// Получение доступа к клону игрового поля
         /// 
         /// </summary>
         public List<Figure> WallsList
         {
             get
             {
-                return _walls;  // TODO: возможно нужно реализовать ICloneble для Heap
+                return (List<Figure>)Clone(); 
             }
         }
 
@@ -48,58 +111,43 @@ namespace RulesSnake.Model
         /// <param name="mapHeight"> Высота игрового поля </param>
         public Walls(int mapWidth, int mapHeight, char sym)
         {
-            Validation(mapWidth, mapHeight);
+            Width = mapWidth;
+            Height = mapHeight;            
 
             _walls = new List<Figure>();
 
-            HorizontalLine upLine = new HorizontalLine(0, mapWidth - 1, 0, sym);
-            VerticalLine leftLine = new VerticalLine(0, mapHeight - 1, 0, sym);
-            VerticalLine rightLine = new VerticalLine(0, mapHeight - 1, mapWidth - 1, sym);
-            HorizontalLine downLine = new HorizontalLine(0, mapWidth - 2, mapHeight - 1, sym);
+            HorizontalLine upLine = new HorizontalLine(0, _width - 1, 0, sym);
+            VerticalLine leftLine = new VerticalLine(0, _height - 1, 0, sym);
+            VerticalLine rightLine = new VerticalLine(0, _height - 1, _width - 1, sym);
+            HorizontalLine downLine = new HorizontalLine(0, _width - 2, _height - 1, sym);
 
-            AddToList(upLine, leftLine, rightLine, downLine);
+            _walls.AddRange(new List<Figure> 
+            {
+                upLine,
+                leftLine,
+                rightLine,
+                downLine
+            });
+        }
+
+        #endregion
+
+        #region ---===   ICloneable   ===---
+
+        /// <summary>
+        /// 
+        /// Клонирование игровых стенок
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public object Clone()
+        {
+            return new List<Figure>(_walls);
         }
 
         #endregion
 
         #region ---===   Private Method   ===---
-
-        /// <summary>
-        /// 
-        /// Проверка входных параметров перед созданием стен
-        /// 
-        /// </summary>
-        /// <param name="width"> Ширина игрового поля </param>
-        /// <param name="height"> Высота игрового поля </param>
-        private void Validation(int width, int height)
-        {
-            if (width <= 0)
-            {
-                throw new ArgumentException("Ширина игрового поля не может быть отрицательной!");
-            }
-
-            if (height <= 0)
-            {
-                throw new ArgumentException("Высота игрового поля не может быть отрицательной!");
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// Добавление стен в общий массив
-        /// 
-        /// </summary>
-        /// <param name="upLine"> Верхняя стена </param>
-        /// <param name="leftLine"> Левая стена </param>
-        /// <param name="rightLine"> Правая стена </param>
-        /// <param name="downLine"> Нижняя стена </param>
-        private void AddToList(HorizontalLine upLine, VerticalLine leftLine, VerticalLine rightLine, HorizontalLine downLine)
-        {
-            _walls.Add(upLine);
-            _walls.Add(leftLine);
-            _walls.Add(rightLine);
-            _walls.Add(downLine);
-        }
 
         #endregion
     }

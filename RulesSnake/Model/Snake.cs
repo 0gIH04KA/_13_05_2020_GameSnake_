@@ -8,6 +8,11 @@ using RulesSnake.Enum;
 
 namespace RulesSnake.Model
 {
+    /// <summary>
+    /// 
+    /// Змейка как игровой обьект
+    /// 
+    /// </summary>
     public class Snake : Figure
     {
         #region ---===   Private Data   ===---
@@ -42,10 +47,10 @@ namespace RulesSnake.Model
 
         /// <summary>
         /// 
-        /// Получение точек
+        /// Получение хвоста змейки
         /// 
         /// </summary>
-        public List<Point> Points
+        public List<Point> Tails
         {
             get
             {
@@ -74,6 +79,25 @@ namespace RulesSnake.Model
             {
                 Point point = new Point(tail);
                 point.Move(i, direction);
+                _points.Add(point);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// Клонирование змейки
+        /// 
+        /// </summary>
+        /// <param name="snake"> Змейка как игровой объект </param>
+        internal Snake(Snake snake) 
+        {
+            _direction = snake._direction;
+            _points = new List<Point>();
+
+            foreach (var item in snake.Tails)
+            {
+                Point point = new Point(item);
+                point.Move(1, snake._direction);
                 _points.Add(point);
             }
         }

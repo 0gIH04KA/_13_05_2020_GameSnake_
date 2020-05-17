@@ -8,6 +8,13 @@ namespace RulesSnake.Interface
 {
     public interface IHits
     {
-        bool IsHit(object obj);
+        /// <summary>
+        /// 
+        /// Проверка столкновения объектов
+        /// 
+        /// </summary>
+        /// <param name="gameObject"> Игровой обьект </param>
+        /// <returns> Резкультат столкновения </returns>
+        bool IsHit(object gameObject);
     }
 }

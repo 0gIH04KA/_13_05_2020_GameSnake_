@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace RulesSnake.Enum
 {
+    /// <summary>
+    /// 
+    /// Перечисление возможных движений игровых обьектов
+    /// 
+    /// </summary>
     internal enum Direction
     {
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN
+        Left,
+        Right,
+        Up,
+        Down
     }
 }

@@ -10,21 +10,52 @@ using RulesSnake.Model;
 
 namespace RulesSnake.Controller
 {
+    /// <summary>
+    /// 
+    /// Контроллер Змейки
+    /// 
+    /// </summary>
     public class SnakeControllers : IMoveble, IEating, IDraw, ICreated, ICloneable
     {
         #region ---===   Constant   ===---
 
+        /// <summary>
+        /// 
+        /// Отображение змейки на игровом поле
+        /// 
+        /// </summary>
         const char STANDART_SYMBOL_SNAKE = '*';
-        const int STANDART_TAIL_SNAKE = 4;
+
+        /// <summary>
+        /// 
+        /// Начальная инициализация хвоста змейки
+        /// 
+        /// </summary>
+        const int STANDART_TAIL_SNAKE = 2;
 
         #endregion
 
         #region ---===   Private Data   ===---
 
+        /// <summary>
+        /// 
+        /// Змейка как игровой объект
+        /// 
+        /// </summary>
         private readonly Snake _snake;
 
-        private readonly Direction _direction = Direction.RIGHT;
+        /// <summary>
+        /// 
+        /// Инициализация движения змейки
+        /// 
+        /// </summary>
+        private readonly Direction _direction = Direction.Right;
 
+        /// <summary>
+        /// 
+        /// Создание хвоста змейки
+        /// 
+        /// </summary>
         private readonly Point _tailSnake = new Point(
             (Console.WindowWidth / 2), // расположение змеи по середине относительно ширины игрового поля
             (Console.WindowHeight / 2),// расположение змеи по середине относительно высоты игрового поля
@@ -34,11 +65,16 @@ namespace RulesSnake.Controller
 
         #region ---===   Property   ===---
 
+        /// <summary>
+        /// 
+        /// Получение доступа к копии змейки
+        /// 
+        /// </summary>
         public Snake Snake
         {
             get
             {
-                return _snake;
+                return (Snake)Clone();
             }
         }
 
@@ -46,6 +82,11 @@ namespace RulesSnake.Controller
 
         #region ---===   Ctor   ===---
 
+        /// <summary>
+        /// 
+        /// Создание змейки как игрового объекта
+        /// 
+        /// </summary>
         public SnakeControllers()
         {
             _snake = new Snake(_tailSnake, STANDART_TAIL_SNAKE, _direction);
@@ -55,49 +96,54 @@ namespace RulesSnake.Controller
 
         #region ---===   IMoveble   ===---
 
+        /// <summary>
+        /// 
+        /// Алгоритм движения змейки на игровом поле
+        /// 
+        /// </summary>
         void IMoveble.Move()
         {
-            Point tail = _snake.Points.First();
-            _snake.Points.Remove(tail);
+            Point tail= _snake.Tails.First();
+            _snake.Tails.Remove(tail);
 
             Point head = GetNextPoint();
-            _snake.Points.Add(head);
+            _snake.Tails.Add(head);
 
             tail.Clear();
             head.Draw();
         }
 
-        //todo: Delete This
-        //public void Move()
-        //{
-        //    Point tail = _snake.Points.First();
-        //    _snake.Points.Remove(tail);
-
-        //    Point head = GetNextPoint();
-        //    _snake.Points.Add(head);
-
-        //    tail.Clear();
-        //    head.Draw();
-        //}
-
         #endregion
 
         #region ---===   Icloneble   ===---
 
+        /// <summary>
+        /// 
+        /// Колонирование змейки
+        /// 
+        /// </summary>
+        /// <returns> иговорой обьект </returns>
         public object Clone()
         {
-            throw new NotImplementedException(); //TODO: Реализовать Клонирование
+            return new Snake(_snake);
         }
 
         #endregion
 
         #region ---===   IEating   ===---
 
-        bool IEating.Eat(object obj)
+        /// <summary>
+        /// 
+        /// Реализация алгоритма поедания еды
+        /// и увеличения хвоста змейки
+        /// 
+        /// </summary>
+        /// <param name="gameObject"> игровой объект </param>
+        /// <returns></returns>
+        bool IEating.Eat(object gameObject)
         {
-            if (!(obj is Point food))
+            if (!(gameObject is Food food))
             {
-                
                 throw new Exception("Ой ой, что-то пошло нетак");
             }
 
@@ -108,7 +154,7 @@ namespace RulesSnake.Controller
             if (((IHits)head).IsHit(food))
             {
                 food.Sym = head.Sym;
-                _snake.Points.Add(food);
+                _snake.Tails.Add(food);
 
                 isEat = true;
             }
@@ -116,31 +162,18 @@ namespace RulesSnake.Controller
             return isEat;
         }
 
-        //todo: Delete This
-        //public bool Eat(Point food)
-        //{
-        //    bool isEat = false;
-
-        //    Point head = GetNextPoint();
-
-        //    if (((IHits)head).IsHit(food))
-        //    {
-        //        food.Sym = head.Sym;
-        //        _points.Add(food);
-
-        //        isEat = true;
-        //    }
-
-        //    return isEat;
-        //}
-
         #endregion
 
         #region ---===   IDraw   ===---
 
+        /// <summary>
+        /// 
+        /// Отрисовка хвоста змейки
+        /// 
+        /// </summary>
         void IDraw.Draw()
         {
-            foreach (Point point in _snake.Points)
+            foreach (Point point in _snake.Tails)
             {
                 point.Draw();
             }
@@ -152,7 +185,7 @@ namespace RulesSnake.Controller
 
         object ICreated.CreatedGameObject()
         {
-            return _snake;
+            return Snake;
         }
 
         #endregion
@@ -174,17 +207,64 @@ namespace RulesSnake.Controller
         {
             bool isTailHit = false;
 
-            var head = _snake.Points.Last();
+            var head = _snake.Tails.Last();
 
-            for (int i = 0; i < _snake.Points.Count - 2; i++)
+            for (int i = 0; i < _snake.Tails.Count - 2; i++)
             {
-                if (((IHits)head).IsHit(_snake.Points[i]))
+                if (((IHits)head).IsHit(_snake.Tails[i]))
                 {
                     isTailHit = true;
                 }
             }
 
             return isTailHit;
+        }
+
+        /// <summary>
+        /// 
+        /// Обработка нажатий на клавиши
+        /// 
+        /// </summary>
+        /// <param name="key"> Нажатая кнопка </param>
+        public void HandleKey(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.LeftArrow:
+                case ConsoleKey.A:
+                    {
+                        _snake.Direction = Direction.Left;
+
+                        break;
+                    }
+
+                case ConsoleKey.RightArrow:
+                case ConsoleKey.D:
+                    {
+                        _snake.Direction = Direction.Right;
+
+                        break;
+                    }
+
+                case ConsoleKey.DownArrow:
+                case ConsoleKey.S:
+                    {
+                        _snake.Direction = Direction.Down;
+
+                        break;
+                    }
+
+                case ConsoleKey.UpArrow:
+                case ConsoleKey.W:
+                    {
+                        _snake.Direction = Direction.Up;
+
+                        break;
+                    }
+
+                default:
+                    break;
+            }
         }
 
         #endregion
@@ -204,7 +284,7 @@ namespace RulesSnake.Controller
         /// </returns>
         private Point GetNextPoint()
         {
-            Point head = _snake.Points.Last();
+            Point head = _snake.Tails.Last();
             Point nextPoint = new Point(head);
 
             nextPoint.Move(1, _snake.Direction);
@@ -212,55 +292,7 @@ namespace RulesSnake.Controller
             return nextPoint;
         }
 
-        /// <summary>
-        /// 
-        /// Обработка нажатий на клавиши
-        /// 
-        /// </summary>
-        /// <param name="key"> Нажатая кнопка </param>
-        public void HandleKey(ConsoleKey key)
-        {
-            switch (key)
-            {
-                case ConsoleKey.LeftArrow:
-                case ConsoleKey.A:
-                    {
-                        _snake.Direction = Direction.LEFT;
-
-                        break;
-                    }
-
-                case ConsoleKey.RightArrow:
-                case ConsoleKey.D:
-                    {
-                        _snake.Direction = Direction.RIGHT;
-
-                        break;
-                    }
-
-                case ConsoleKey.DownArrow:
-                case ConsoleKey.S:
-                    {
-                        _snake.Direction = Direction.DOWN;
-
-                        break;
-                    }
-
-                case ConsoleKey.UpArrow:
-                case ConsoleKey.W:
-                    {
-                        _snake.Direction = Direction.UP;
-
-                        break;
-                    }
-
-                default:
-                    break;
-            }
-        }
-
-        
-
         #endregion
+
     }
 }

@@ -26,16 +26,6 @@ namespace _13_05_2020_GameSnake_
 
 			#region ---===   Constant   ===---
 
-			const int MAP_WIDTH = 80; // TODO: Добавить запрос у пользователя размеры игрового поля
-			const int MAP_HEIGTH = 25;
-
-			#endregion
-
-			#region ---===   Setting Console   ===---
-
-			Console.SetWindowSize(80, 25);
-			Console.SetBufferSize(80, 25);
-
 			#endregion
 
 			ConsoleKey exit;
@@ -44,29 +34,17 @@ namespace _13_05_2020_GameSnake_
 			{
 				#region ---===   Controllers   ===---
 
-				WallController wallController = new WallController(MAP_WIDTH, MAP_HEIGTH);
+				WallController wallController = new WallController(Console.WindowWidth - 20, Console.WindowHeight - 10);
 				SnakeControllers snakeControllers = new SnakeControllers();
-				FoodController foodController = new FoodController();
+				FoodController foodController = new FoodController(wallController);
 
 				#endregion
 
-				#region ---===   Cread Object   ===---
-
-				((ICreated)snakeControllers).CreatedGameObject();
-				((ICreated)foodController).CreatedGameObject();
-
-				#endregion
-
-				#region ---===   Draw   ===---
-
-				((IDraw)wallController).Draw();
-				((IDraw)snakeControllers).Draw();
-				((IDraw)foodController).Draw();
-
-				#endregion
+				CratedGameObject(snakeControllers, foodController);
+				DrawGameObject(wallController, snakeControllers, foodController);
 
 				GameProcess(wallController, snakeControllers, foodController, resourceMenager, culture);
-
+				
 				exit = ProcessingPressKey(resourceMenager, culture);
 
 				Console.Clear();
@@ -76,40 +54,7 @@ namespace _13_05_2020_GameSnake_
 				    && (exit == ConsoleKey.Y));
 		}
 
-		#region ---===   Private Method   ===---
-
-		/// <summary>
-		///  
-		/// Обработка нажатий для продолжения игры
-		/// 
-		/// </summary>
-		/// <param name="resource"> Ресурсы для отображения сообщений пользователю </param>
-		/// <param name="culture"> Регион пользователя </param>
-		/// <returns> Ожидаемую кнопку </returns>
-		private static ConsoleKey ProcessingPressKey(ResourceManager resource, CultureInfo culture)
-		{
-			ConsoleKey key;
-
-			while (true)
-			{
-				key = Console.ReadKey(true).Key;
-
-				switch (key)
-				{
-					case ConsoleKey.Escape:
-					case ConsoleKey.N:
-					case ConsoleKey.Y:
-
-						return key;
-
-					default:
-
-						WriteGameOver(resource, culture);
-
-						continue;
-				}
-			}
-		}
+		#region ---===   Game Process   ===---
 
 		/// <summary>
 		/// 
@@ -118,18 +63,22 @@ namespace _13_05_2020_GameSnake_
 		/// </summary>
 		/// <param name="culture"> Регион пользователя </param>
 		/// <param name="resourceMenager"> Ресурсы для отображения сообщений пользователю </param>
-		private static void GameProcess(WallController wallController, SnakeControllers snakeControllers, FoodController foodController, ResourceManager resourceMenager, CultureInfo culture)
+		private static void GameProcess(WallController wallController,
+										SnakeControllers snakeControllers,
+										FoodController foodController,
+										ResourceManager resourceMenager,
+										CultureInfo culture)
 		{
 			while (!IsGameOver(wallController, snakeControllers))
 			{
 				if (IsEatingSnake(snakeControllers, foodController))
 				{
-					Point food = (Point)((ICreated)(foodController)).CreatedGameObject();
-					food.Draw();
+					Point food = (Point)((ICreated)foodController).CreatedGameObject();
+					DrawGameObject(food);
 				}
 				else
 				{
-					((IMoveble)snakeControllers).Move();
+					MoveGameObject(snakeControllers);
 				}
 
 				Thread.Sleep(100);
@@ -169,6 +118,83 @@ namespace _13_05_2020_GameSnake_
 		{
 			return (wall).IsHit(snake.Snake)
 				 || (snake.IsHitTail());
+		}
+
+		#endregion
+
+		#region ---===   Manipulation Game Object   ===---
+
+		/// <summary>
+		/// 
+		/// Создание игровых обьектов
+		/// 
+		/// </summary>
+		/// <param name="gameObject"> Игровой объект </param>
+		private static void CratedGameObject(params ICreated[] gameObject)
+		{
+			foreach (ICreated item in gameObject)
+			{
+				item.CreatedGameObject();
+			}
+		}
+
+		/// <summary>
+		/// 
+		/// Отрисовка игровых обьектов 
+		/// 
+		/// </summary>
+		/// <param name="gameObject"> Игровой объект </param>
+		private static void DrawGameObject(params IDraw[] gameObject)
+		{
+			foreach (IDraw item in gameObject)
+			{
+				item.Draw();
+			}
+		}
+
+		private	static void MoveGameObject(params IMoveble[] gameObject)
+		{
+			foreach (IMoveble item in gameObject)
+			{
+				item.Move();
+			}
+		}
+
+		#endregion
+
+		#region ---===   Private Method   ===---
+
+		/// <summary>
+		///  
+		/// Обработка нажатий для продолжения игры
+		/// 
+		/// </summary>
+		/// <param name="resource"> Ресурсы для отображения сообщений пользователю </param>
+		/// <param name="culture"> Регион пользователя </param>
+		/// <returns> Ожидаемую кнопку </returns>
+		private static ConsoleKey ProcessingPressKey(ResourceManager resource, CultureInfo culture)
+		{
+			ConsoleKey key;
+
+			while (true)
+			{
+				key = Console.ReadKey(true).Key;
+
+				switch (key)
+				{
+					case ConsoleKey.Escape:
+					case ConsoleKey.N:
+					case ConsoleKey.Y:
+
+						return key;
+
+					default:
+
+						WriteGameOver(resource, culture);
+
+						continue;
+				}
+			}
 		}
 
 		/// <summary>
